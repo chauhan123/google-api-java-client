@@ -8,12 +8,6 @@
   <li>Make sure you have at least a Committer role</li>
   <li>Make sure you have permission to post to the <a
     href="http://google-api-java-client.blogspot.com/">Announcement Blog</a>.</li>
-  <li>Check out the <code>google-api-java-client</code> and <code>javadoc</code>
-  projects as follows:<pre>
-cd <i>rootDir</i>
-hg clone https://google-api-java-client.googlecode.com/hg/ google-api-java-client
-hg clone https://javadoc.google-api-java-client.googlecode.com/hg/ javadoc
-</pre></li>
   <li>Download <a href="http://sourceforge.net/projects/javadiff/">JDiff</a>.</li>
   <li>Set up for pushing to central Maven repository
   <ul>
@@ -84,11 +78,12 @@ google-api-java-client.password = <i>[password from <a
   <li>Prepare the project
   <ul>
     <li><pre>
-cd <i>rootDir</i>/google-api-java-client
-hg status
-hg out
-</pre> to make sure you have no changes that have not yet been committed or pushed to
-    the Mercurial server</li>
+cd /tmp
+rm -rf google-api-java-client
+mkdir google-api-java-client
+cd google-api-java-client
+hg clone https://google-api-java-client.googlecode.com/hg/ default
+</pre></li>
   </ul>
   </li>
   <li>For minor version update (i.e. feature release instead of just a bug
@@ -96,9 +91,7 @@ hg out
   branch.
   <ul>
     <li>Merge dev branch into default branch: <pre>
-cd <i>rootDir</i>/google-api-java-client
 hg update default
-hg pull -u
 hg merge -r dev
 hg commit -m "merge with dev branch"
 hg push
@@ -118,9 +111,9 @@ hg push
 hg update default
 </pre></li>
     <li>Merge dev branch for samples: <pre>
-cd <i>rootDir</i>/google-api-java-client-samples
-hg update default
-hg pull -u
+cd /tmp
+hg clone https://samples.google-api-java-client.googlecode.com/hg/ samples
+cd samples
 hg merge -r dev
 hg commit -m "merge with dev branch"
 hg push
@@ -132,7 +125,7 @@ hg push
   OSS Maven Repository Usage Guide</a>):
   <ul>
     <li>Prepare:<pre>
-cd <i>rootDir</i>/google-api-java-client
+cd /tmp/google-api-java-client/default
 mvn clean deploy
 mvn release:clean
 </pre></li>
@@ -168,51 +161,47 @@ mvn release:clean
   <li>Start development of next bug fix version
   <ul>
     <li><code>hg update</code></li>
-    <li>For the following files, replace <code>1.5.0-beta</code> with <code>1.5.1-alpha</code>:
+    <li>For the following files, replace <code>1.5.0-beta</code> with the next bug fix version:
     <ul>
       <li><code>jdiff.xml</code></li>
-      <li><code>release.html</code>
-      <ul>
-        <li>before-hand replace 1.5.1 with next minor version, and 1.5.0
-        with 1.5.1</li>
-      </ul>
-      </li>
+      <li><code>release.html</code></li>
       <li><code>google-api-client/src/main/java/com/google/api/client/util/Strings.java</code></li>
     </ul>
     </li>
     <li><pre>
-hg commit -m "start 1.5.1-alpha"
+hg commit -m "start next bug fix version"
 hg push
 </pre></li>
   </ul>
   </li>
   <li>Prepare the released library zip file and javadoc
   <ul>
-    <li>JDiff is a tool for showing the difference between the JavaDoc of
+    <li>Overview: JDiff is a tool for showing the difference between the JavaDoc of
     one version of the library vs. the JavaDoc of an old version of the library.
     Hence, we will check out the last minor version of the library into a
     temporary directory and compare against the JavaDoc of the just released
     version of the library, and then hg commit that diff into the javadoc Hg
     repository.</li>
-    <li>change these constants from jdiff.xml for your environment:
-    JDIFF_HOME, MAVEN_REPOSITORY_HOME,
-    JAVADOC_PROJECT_ROOT_DIR</li>
     <li><pre>
 cd /tmp
 rm -rf google-api-java-client
 mkdir google-api-java-client
 cd google-api-java-client
-hg clone -r 1.4.2-alpha https://google-api-java-client.googlecode.com/hg/ 1.4.2-alpha
+hg clone https://javadoc.google-api-java-client.googlecode.com/hg/ javadoc
+hg clone -r 1.4.1-beta https://google-api-java-client.googlecode.com/hg/ 1.4.1-beta
 hg clone -r 1.5.0-beta https://google-api-java-client.googlecode.com/hg/ 1.5.0-beta
 cd 1.5.0-beta
 mvn javadoc:jar install site
-cp -R target/site/apidocs/ <i>rootDir</i>/javadoc/1.5.0-beta
+cp -R target/site/apidocs/ ../javadoc/1.5.0-beta
+</pre></li>
+    <li>change these constants from jdiff.xml for your environment:
+    JDIFF_HOME, MAVEN_REPOSITORY_HOME</li>
+    <li><pre>
 ant -f jdiff.xml
-cd <i>rootDir</i>/javadoc
+cd ../javadoc
 hg add
 hg commit -m "1.5.0-beta"
 hg push
-cd <i>rootDir</i>/google-api-java-client
 </pre></li>
   </ul>
   </li>
