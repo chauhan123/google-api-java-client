@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- see http://mojo.codehaus.org/clirr-maven-plugin/examples/ignored-differences.html -->
+<differences>
+  <!-- 7002 (method removed): className, method -->
+  <difference>
+    <differenceType>7002</differenceType>
+    <className>com/google/api/client/googleapis/media/MediaHttpDownloader</className>
+    <method>boolean isBackOffPolicyEnabled()</method>
+  </difference>
+  <difference>
+    <differenceType>7002</differenceType>
+    <className>com/google/api/client/googleapis/media/MediaHttpDownloader</className>
+    <method>com.google.api.client.googleapis.media.MediaHttpDownloader setBackOffPolicyEnabled(boolean)</method>
+  </difference>
+  <difference>
+    <differenceType>7002</differenceType>
+    <className>com/google/api/client/googleapis/media/MediaHttpUploader</className>
+    <method>boolean isBackOffPolicyEnabled()</method>
+  </difference>
+  <difference>
+    <differenceType>7002</differenceType>
+    <className>com/google/api/client/googleapis/media/MediaHttpUploader</className>
+    <method>com.google.api.client.googleapis.media.MediaHttpUploader setBackOffPolicyEnabled(boolean)</method>
+  </difference>
+  <!-- 7005 (Method Argument Type changed): className, method, to (to is a full new signature) -->
+  <!-- Notice: Clirr shows ArrayList cast bug. So when running 'mvn -q clirr:check' you will still
+  see the following error:
+  [ERROR] com.google.api.client.googleapis.auth.oauth2.GoogleIdToken$Payload:
+  Parameter 1 of 'public com.google.api.client.googleapis.auth.oauth2.GoogleIdToken$Payload
+  setEmailVerified(boolean)' has changed its type to java.lang.Boolean
+  <difference>
+    <differenceType>7005</differenceType>
+    <className>com/google/api/client/googleapis/auth/oauth2/GoogleIdToken$Payload</className>
+    <method>void setEmailVerified(boolean)</method>
+    <to>void setEmailVerified(java.lang.Boolean)</to>
+  </difference>-->
+  <!-- 7006 Method Return Type changed -->
+  <difference>
+    <differenceType>7006</differenceType>
+    <className>com/google/api/client/googleapis/auth/oauth2/GoogleIdToken$Payload</className>
+    <method>boolean getEmailVerified()</method>
+    <to>java.lang.Boolean</to>
+  </difference>
+  <!-- 8001 (Class removed): className -->
+  <difference>
+    <differenceType>8001</differenceType>
+    <className>com/google/api/client/googleapis/xml/atom/*</className>
+  </difference>
+  <difference>
+    <differenceType>8001</differenceType>
+    <className>com/google/api/client/googleapis/**/subscriptions/**</className>
+  </difference>
+</differences>
